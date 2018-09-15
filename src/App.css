@@ -1,3 +1,83 @@
-.App {
-  text-align: center;
+/* The root elements */
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+/* The overall app container */
+*[class^="app-"] {
+  box-sizing: border-box;
+
+  margin: 0;
+  height: 100%;
+
+  overflow: auto;
+}
+
+.app-container {
+  background-color: #333333;
+}
+
+/* The fly-in classes */
+*[class^="fly-"] {
+
+  display: inline-block;
+  position: absolute;
+  overflow: hidden;
+  word-wrap: break-word;
+
+  max-width: 600px;
+}
+
+.fly-enter {
+  /* This is the initial frame of the spawning animation
+  */
+  left: 100%;
+  right: 0%;
+}
+.fly-enter-active {
+  /* This is the class we assign when we are spawning the new message
+  */
+  left: 0%;
+  right: 100%; 
+  transition: left 5s linear, right 5s linear;
+}
+.fly-exit {
+  /* This is the initial frame of the exit animation
+  */
+  opacity: 1;
+}
+.fly-exit-active {
+  /* This is the class we assign when we are about to delete the message
+  */
+  opacity: 0;
+  transition: opacity 1000ms linear;
+  transition-delay: 5s;
+}
+
+/* The message block */
+*[class^="msg-"] {
+}
+
+.msg-container {
+  font: 1.2em "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  color: #fafafa;
+
+  float: left;
+  position: relative;
+
+  padding: 0 10px 10px;
+}
+
+.msg-user {
+
+}
+
+.msg-content {
+
 }

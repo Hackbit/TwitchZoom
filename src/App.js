@@ -1,23 +1,92 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import uuid from "uuid/v1";
+
 import './App.css';
 
-import Message from "./components/Message";
-
 class App extends Component {
-  fn_onDestroyComponent() {
-    console.log("Hello!");
+  /* State for this component has:
+   * - messages: Array<{
+   *    id: number
+   *    height: number
+   *    user: string
+   *    message: string
+   *   }>
+   */
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      messages: []
+    };
+
+    this.fn_addMessage = this.fn_addMessage.bind(this);
+    this.fn_removeMessage = this.fn_removeMessage.bind(this);
+
+    this.eh_onClickButton = this.eh_onClickButton.bind(this);
+  }
+
+  get fn_getRandomHeight() { 
+    return Math.max( 5, Math.min( 95, Math.round( (100 * Math.random()) ) ) ); 
+  }
+
+  fn_addMessage(user, message) {
+    const { messages } = this.state;
+    this.setState(state => ({
+      messages: [
+        ...messages,
+        {
+          id: uuid(),
+          height: this.fn_getRandomHeight,
+          user: user || "testUserName",
+          message: message || "Hellooooooooo"
+        }
+      ]
+    }));
+  }
+
+  fn_removeMessage(id) {
+    console.log(id);
+    const { messages } = this.state;
+    this.setState(state => ({
+      messages: messages.filter(message => message.id !== id)
+    }));
+  }
+
+  eh_onClickButton() {
+    this.fn_addMessage();
   }
 
   render() {
+    const { messages } = this.state;
     return (
-      <div className="App">
-        <p>
-          <Message username="user123" message="test message" onCrawlCompleted={this.fn_onDestroyComponent} />
-        </p>
+      <div className="app-container">
+        <button onClick={this.eh_onClickButton}>Test</button>
+        <TransitionGroup className="app-group"> 
+          {messages.map( ({id, height, user, message}) => (
+            <CSSTransition
+              key={id}
+              timeout={5000}
+              classNames="fly"
+              unmountOnExit
+              onEntered={() => {
+                this.fn_removeMessage(id);
+              }}
+            >
+              <div 
+                className="msg-container" 
+                style={{ 
+                  top: height + "%"
+                }}
+              >
+                <span className="msg-user">{user}</span>: <span className="msg-content">{message}</span>
+              </div>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
       </div>
     );
-  }
+  }  
 }
 
 export default App;
