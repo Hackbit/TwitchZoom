@@ -1,6 +1,9 @@
 /* The root elements */
 body {
+  /* We'll need transparency later
   background-color: rgba(0,0,0,0);
+  */
+  background-color: #333;
 }
 html, body {
   margin: 0;
