@@ -5,7 +5,9 @@
   "dependencies": {
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "tmi.js": "^1.2.1",
+    "twitch-bot": "^1.2.5"
   },
   "scripts": {
     "start": "react-scripts start",
