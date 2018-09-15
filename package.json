@@ -13,8 +13,10 @@
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
     "react-scripts": "1.1.5",
+    "react-transition-group": "^2.4.0",
     "tmi.js": "^1.2.1",
-    "twitch-bot": "^1.2.5"
+    "twitch-bot": "^1.2.5",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

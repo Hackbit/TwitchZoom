@@ -1,28 +1,100 @@
-.App {
-  text-align: center;
+/* The root elements */
+body {
+  /* We'll need transparency later
+  background-color: rgba(0,0,0,0);
+  */
+  background-color: #333;
+}
+html, body {
+  margin: 0;
+  height: 100%;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+#root {
+  height: 100%;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+/* The overall app container */
+*[class^="app-"] {
+  box-sizing: border-box;
+
+  margin: 0;
+  height: 100%;
+
+  overflow: hidden;
 }
 
-.App-title {
-  font-size: 1.5em;
+.app-container {
+  display: relative;
 }
 
-.App-intro {
-  font-size: large;
+.app-group {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#btn-test {
+  display: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+/* The fly-in classes */
+*[class^="fly-"] {
+  position: absolute;
+}
+
+.fly-enter {
+  /* This is the initial frame of the spawning animation
+  */
+  left: 100%;
+}
+.fly-enter-active {
+  /* This is the class we assign when we are spawning the new message
+  */
+  left: -50%;
+  transition: left 10s linear;
+}
+.fly-exit {
+  /* This is the initial frame of the exit animation
+  */
+  opacity: 1;
+}
+.fly-exit-active {
+  /* This is the class we assign when we are about to delete the message
+  */
+  opacity: 0;
+  display: none;
+}
+
+/* The message block */
+*[class^="msg-"] {
+  position: relative;
+  display: inline;
+  overflow: hidden;
+}
+
+.msg-container {
+  font: 1.7em "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  color: #fafafa;
+  /* There is a strangerendering issue where 
+    the shadow becomes detached from the element
+  text-shadow: 0 1.5em 0 #333333;
+  */
+
+  word-wrap: break-word;
+}
+
+.msg-user {
+
+}
+
+.msg-content {
+
 }
