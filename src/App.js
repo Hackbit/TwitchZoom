@@ -1,41 +1,41 @@
-import React, { Component } from "react";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import classNames from "classnames";
-import io from "socket.io-client";
+import React, { Component } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import classNames from 'classnames';
+import io from 'socket.io-client';
 
-import globalEmotes from "./data/emotes.json";
+import globalEmotes from './data/emotes.json';
 
-import "./App.css";
+import './App.css';
 
 const WINDOW_WIDTH = window.innerWidth;
 const WINDOW_HEIGHT = window.innerHeight;
 
 class App extends Component {
   /* State for this component has:
-	* - channel: string
-   	* - messages: Array<{
-   	*    id: number
-	*    height: number
-	*  	 user: string
-   	*    message: string
-   	*	 color: string
-	*   }>
-   	*/
+  * - channel: string
+    * - messages: Array<{
+    *    id: number
+  *    height: number
+  *    user: string
+    *    message: string
+    *  color: string
+  *   }>
+    */
   constructor(props) {
     super(props);
 
     this.state = {
-      channel: "",
+      channel: '',
       messages: [],
-      areControlsInvisible: false
+      areControlsInvisible: false,
     };
 
-    this.socket = io.connect("http://localhost:8080");
+    this.socket = io.connect('http://localhost:8080');
   }
 
   getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
+    const letters = '0123456789ABCDEF';
+    let color = '#';
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
@@ -69,17 +69,19 @@ class App extends Component {
 
   handleWebsocket = () => {
     const { channel } = this.state;
-    if (channel.trim() !== "") {
+    if (channel.trim() !== '') {
       this.toggleControlsVisibility();
-      this.socket.emit("message", channel);
-      this.socket.on("message", response => {
+      this.socket.emit('message', channel);
+      this.socket.on('message', response => {
         this.handleMessageState(response);
       });
     }
   };
 
   toggleControlsVisibility = () => {
-    this.setState({ areControlsInvisible: !this.state.areControlsInvisible });
+    this.setState({
+      areControlsInvisible: !this.state.areControlsInvisible,
+    });
   };
 
   handleChannelSearch = event => {
@@ -94,12 +96,12 @@ class App extends Component {
   removeMessage = id => {
     const { messages } = this.state;
     this.setState(state => ({
-      messages: messages.filter(message => message.id !== id)
+      messages: messages.filter(message => message.id !== id),
     }));
   };
 
-  parseMessage(msg) {
-    let splitText = msg.split(" ");
+  parseMessage = msg => {
+    let splitText = msg.split(' ');
     splitText.forEach((word, i) => {
       if (globalEmotes[word]) {
         const emote = (
@@ -115,12 +117,12 @@ class App extends Component {
         // Replace the word with the HTML string
         splitText[i] = emote;
       } else {
-        splitText[i] += " ";
+        splitText[i] += ' ';
       }
     });
 
     return splitText;
-  }
+  };
 
   displayMessages = () =>
     this.state.messages.map(({ id, height, color, user, message }) => (
@@ -131,16 +133,14 @@ class App extends Component {
         unmountOnExit
         onEntered={() => {
           this.removeMessage(id);
-        }}
-      >
+        }}>
         <div
           className="msg-container"
           style={{
-            top: height + "%",
-            color
-          }}
-        >
-          <span className="msg-user">{user}</span>:{" "}
+            top: height + '%',
+            color,
+          }}>
+          <span className="msg-user">{user}</span>:{' '}
           <span className="msg-content">{this.parseMessage(message)}</span>
         </div>
       </CSSTransition>
@@ -160,10 +160,9 @@ class App extends Component {
       <div className="app-container">
         <form
           onSubmit={this.handleChannelSearch}
-          className={classNames("form-group", {
-            controlsInvisible: this.state.areControlsInvisible
-          })}
-        >
+          className={classNames('form-group', {
+            controlsInvisible: this.state.areControlsInvisible,
+          })}>
           <input
             type="text"
             name="channel"
@@ -174,7 +173,7 @@ class App extends Component {
             onChange={this.handleInputChange}
           />
           <button className="btn btn-primary btn-sm btn-block" type="submit">
-            Tune into stream
+            Tune into a stream
           </button>
         </form>
         <TransitionGroup className="app-group">
