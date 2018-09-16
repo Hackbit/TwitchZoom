@@ -8,10 +8,6 @@ const socketio = require('socket.io');
 const server = http.createServer();
 const io = socketio.listen(server);
 
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('build'));
-}
-
 function bot(channel, socket) {
 	const tmiOptions = {
 		options: {
