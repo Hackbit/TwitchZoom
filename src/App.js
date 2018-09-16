@@ -36,6 +36,7 @@ class App extends Component {
       showStream: false,
     };
 
+    this.timeout = null;
     this.socket = io.connect(WS_URL);
   }
 
@@ -124,6 +125,7 @@ class App extends Component {
               globalEmotes[word].id
             }/3.0`}
             key={globalEmotes[word].id + i}
+            alt={globalEmotes[word].id}
           />
         );
 
@@ -161,19 +163,22 @@ class App extends Component {
 
   getChannelFromURL = () => {
     if (window.location.pathname !== '/') {
-      const channel = window.location.pathname.replace('/', '');
+      const channel = window.location.pathname.replace('/', '').split('/')[0];
       this.setState({ channel });
-      this.handleWebsocket();
+      this.timeout = setTimeout(() => {
+        this.handleWebsocket();
+      }, 300);
     }
   };
 
   componentDidMount() {
-    this.handleWebsocket();
     this.getChannelFromURL();
+    this.handleWebsocket();
   }
 
   componentWillUnmount() {
     this.socket.close();
+    clearTimeout(this.timeout);
   }
 
   render() {
