@@ -159,8 +159,17 @@ class App extends Component {
       </CSSTransition>
     ));
 
+  getChannelFromURL = () => {
+    if (window.location.pathname !== '/') {
+      const channel = window.location.pathname.replace('/', '');
+      this.setState({ channel });
+      this.handleWebsocket();
+    }
+  };
+
   componentDidMount() {
     this.handleWebsocket();
+    this.getChannelFromURL();
   }
 
   componentWillUnmount() {
