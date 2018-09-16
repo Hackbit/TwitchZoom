@@ -15,7 +15,7 @@ As an added bonus, you can use this app to overlay it automatically on your own 
 
 ## Instructions
 
-###Option 1: live demo app 
+### Option 1: live demo app 
 
 - Visit this site: `http://104.248.4.129/`
 - (alternatively, visit `http://104.248.4.129/usernamehere` if you want to automatically tune in to a particular channel)
@@ -25,7 +25,7 @@ As an added bonus, you can use this app to overlay it automatically on your own 
 
 
 
-###Option 2: local hosting (or, if the live demo isn't working for some reason)
+### Option 2: local hosting (or, if the live demo isn't working for some reason)
 
 - Clone the repo and install the npm packages via `npm install`
 - Run `node server.js` in one bash terminal console instance
