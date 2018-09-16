@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import io from 'socket.io-client';
 
-// import uuid from "uuid/v1";
-
 import './App.css';
 
 class App extends Component {
