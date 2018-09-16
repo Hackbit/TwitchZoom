@@ -84,7 +84,7 @@ body {
 	/* This is the class we assign when we are about to delete the message
   */
 	opacity: 0;
-	display: none;
+	transition: opacity 2s linear;
 }
 
 /* The message block */
