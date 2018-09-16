@@ -50,16 +50,14 @@ class App extends Component {
   handleMessageState = response => {
     const { userstate, message } = response;
     // Keep messages inside viewport
-    const height =
-      this.getRandomHeight() >= WINDOW_HEIGHT
-        ? WINDOW_HEIGHT
-        : this.getRandomHeight();
+    const randomHeight = this.getRandomHeight();
+    const height = randomHeight >= WINDOW_HEIGHT ? WINDOW_HEIGHT : randomHeight;
     const newMessage = {
       id: userstate.id,
       user: userstate.username,
       color: userstate.color || this.getRandomColor(),
       height,
-      message
+      message,
     };
     let messages = [...this.state.messages, newMessage];
     // Limit messages array to 20 at a time
