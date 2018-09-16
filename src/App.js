@@ -1,14 +1,19 @@
-import React, { Component } from "react";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import classNames from "classnames";
-import io from "socket.io-client";
+import React, { Component } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import classNames from 'classnames';
+import io from 'socket.io-client';
 
-import globalEmotes from "./data/emotes.json";
+import globalEmotes from './data/emotes.json';
 
-import "./App.css";
+import './App.css';
 
 const WINDOW_WIDTH = window.innerWidth;
 const WINDOW_HEIGHT = window.innerHeight;
+
+const WS_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://104.248.4.129:8080'
+    : 'http://localhost:8080';
 
 class App extends Component {
   /* State for this component has:
@@ -25,19 +30,18 @@ class App extends Component {
     super(props);
 
     this.state = {
-      channel: "",
+      channel: '',
       messages: [],
       areControlsInvisible: false,
-      showStream: false
+      showStream: false,
     };
 
-    // this.socket = io.connect("http://104.248.4.129:8080");
-    this.socket = io.connect("http://localhost:8080");
+    this.socket = io.connect(WS_URL);
   }
 
   getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
+    const letters = '0123456789ABCDEF';
+    let color = '#';
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
@@ -59,7 +63,7 @@ class App extends Component {
       user: userstate.username,
       color: userstate.color || this.getRandomColor(),
       height,
-      message
+      message,
     };
     let messages = [...this.state.messages, newMessage];
     // Limit messages array to 100 at a time
@@ -71,11 +75,11 @@ class App extends Component {
 
   handleWebsocket = () => {
     const { channel } = this.state;
-    if (channel.trim() !== "") {
+    if (channel.trim() !== '') {
       this.toggleControlsVisibility();
       this.toggleStream();
-      this.socket.emit("message", channel);
-      this.socket.on("message", response => {
+      this.socket.emit('message', channel);
+      this.socket.on('message', response => {
         this.handleMessageState(response);
       });
     }
@@ -83,13 +87,13 @@ class App extends Component {
 
   toggleStream = () => {
     this.setState({
-      showStream: !this.state.showStream
+      showStream: !this.state.showStream,
     });
   };
 
   toggleControlsVisibility = () => {
     this.setState({
-      areControlsInvisible: !this.state.areControlsInvisible
+      areControlsInvisible: !this.state.areControlsInvisible,
     });
   };
 
@@ -105,12 +109,12 @@ class App extends Component {
   removeMessage = id => {
     const { messages } = this.state;
     this.setState(state => ({
-      messages: messages.filter(message => message.id !== id)
+      messages: messages.filter(message => message.id !== id),
     }));
   };
 
   parseMessage = msg => {
-    let splitText = msg.split(" ");
+    let splitText = msg.split(' ');
     splitText.forEach((word, i) => {
       if (globalEmotes[word]) {
         const emote = (
@@ -126,7 +130,7 @@ class App extends Component {
         // Replace the word with the HTML string
         splitText[i] = emote;
       } else {
-        splitText[i] += " ";
+        splitText[i] += ' ';
       }
     });
 
@@ -142,16 +146,14 @@ class App extends Component {
         unmountOnExit
         onEntered={() => {
           this.removeMessage(id);
-        }}
-      >
+        }}>
         <div
           className="msg-container"
           style={{
-            top: height + "%",
-            color
-          }}
-        >
-          <span className="msg-user">{user}</span>:{" "}
+            top: height + '%',
+            color,
+          }}>
+          <span className="msg-user">{user}</span>:{' '}
           <span className="msg-content">{this.parseMessage(message)}</span>
         </div>
       </CSSTransition>
@@ -171,10 +173,9 @@ class App extends Component {
       <div className="app-container">
         <form
           onSubmit={this.handleChannelSearch}
-          className={classNames("form-group", {
-            controlsInvisible: this.state.areControlsInvisible
-          })}
-        >
+          className={classNames('form-group', {
+            controlsInvisible: this.state.areControlsInvisible,
+          })}>
           <input
             type="text"
             name="channel"
@@ -190,7 +191,7 @@ class App extends Component {
         </form>
         <TransitionGroup className="app-group">
           {showStream &&
-            channel.trim() !== "" && (
+            channel.trim() !== '' && (
               <iframe
                 src={`https://player.twitch.tv/?channel=${channel}`}
                 height={WINDOW_HEIGHT}
