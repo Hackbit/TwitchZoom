@@ -4,7 +4,7 @@ Watch Twitch streams the Japanese way with this refreshing new take on an old co
 
 
 
-In the 2000s as video streaming on the internet was gaining popularity, a Japanese website called Nico Nico gained popularity. The hook for their website was that comments and chat messages would be overlaid on the stream live as you were watching via a fly-by marquee animation!
+In the 2000s as video streaming on the internet was gaining popularity, there was a Japanese site called Nico Nico. The hook for their site was that comments and chat messages would be overlaid on the stream live as you were watching via a fly-by marquee animation!
 
 Nobody has really ever used that hook since the early 2000s and so we decided to apply it to Twitch using their own API and recreate it for a new audience so that you can watch in a more fun way!
 
