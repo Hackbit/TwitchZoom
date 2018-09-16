@@ -109,7 +109,7 @@ class App extends Component {
 					<button
 						className="btn btn-primary btn-sm"
 						type="submit"
-						onClick={this.onClickButton}>
+					>
 						Submit
 					</button>
 				</form>
