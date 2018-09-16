@@ -1,24 +1,26 @@
 {
-	"name": "reactriot2018-unemployable",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"cors": "^2.8.4",
-		"express": "^4.16.3",
-		"react": "^16.5.1",
-		"react-dom": "^16.5.1",
-		"react-scripts": "1.1.5",
-		"react-transition-group": "^2.4.0",
-		"socket.io": "^2.1.1",
-		"socket.io-client": "^2.1.1",
-		"tmi.js": "^1.2.1",
-		"twitch-bot": "^1.2.5",
-		"uuid": "^3.3.2"
-	},
-	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject"
-	}
+  "name": "reactriot2018-unemployable",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
+    "react-scripts": "1.1.5",
+    "react-transition-group": "^2.4.0",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
+    "tmi.js": "^1.2.1",
+    "twitch-bot": "^1.2.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "json-loader": "^0.5.7"
+  }
 }

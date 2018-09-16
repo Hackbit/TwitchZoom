@@ -83,7 +83,6 @@ body {
 .msg-container {
 	font: 1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 700;
-	color: #fafafa;
 	/* There is a strangerendering issue where
     the shadow becomes detached from the element
   text-shadow: 0 1.5em 0 #333333;
@@ -96,4 +95,9 @@ body {
 }
 
 .msg-content {
+	color: #fafafa;
+}
+
+.emote {
+	height: 28px;
 }

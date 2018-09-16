@@ -2,26 +2,54 @@ import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import io from 'socket.io-client';
 
-// import uuid from "uuid/v1";
+import globalEmotes from "./data/emotes.json";
 
 import './App.css';
 
+
+
+const MessageContent = (msg) => {
+	let splitText = msg.split(' ');
+	splitText.forEach( (word, i) => {
+		if (globalEmotes[word]) {
+			const emote = `<img className="emote" src={http://static-cdn.jtvnw.net/emoticons/v1/${globalEmotes[word].id}/3.0} />`;
+			
+			// Replace the word with the HTML string
+			splitText[i] = emote;
+		}
+	});
+	console.log(splitText);
+	return ( `${splitText.join(' ')}` );
+};
+
+
+
 class App extends Component {
 	/* State for this component has:
-   * - messages: Array<{
-   *    id: number
-   *    height: number
-   *    user: string
-   *    message: string
-   		color: string
-   *   }>
-   */
+	* - channel: string
+   	* - messages: Array<{
+   	*    id: number
+	*    height: number
+	*  	 user: string
+   	*    message: string
+   	*	 color: string
+	*   }>
+	* - emotes: {
+		 emoteText: {
+		  id: number,
+		  code: string,
+		  emoticon_set: number,
+		  description: null
+		 }
+	*   }
+   	*/
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			channel: '',
 			messages: [],
+			emotes: {}
 		};
 
 		this.socket = io.connect('http://localhost:8080');
@@ -35,9 +63,13 @@ class App extends Component {
 		}
 
 		return color;
-	};
+	}
 
-	handleMessegesState = response => {
+	getRandomHeight = () => {
+		return Math.max(5, Math.min(95, Math.round(100 * Math.random())));
+	}
+
+	handleMessageState = response => {
 		const { userstate, message } = response;
 		const newMessage = {
 			id: userstate.id,
@@ -48,37 +80,48 @@ class App extends Component {
 		};
 		const messages = [...this.state.messages, newMessage];
 		this.setState({ messages });
-	};
+	}
 
 	handleWebsocket = () => {
 		const { channel } = this.state;
 		if (channel.trim() !== '') {
 			this.socket.emit('message', channel);
 			this.socket.on('message', response => {
-				this.handleMessegesState(response);
+				this.handleMessageState(response);
 			});
 		}
-	};
-
-	getRandomHeight = () => {
-		return Math.max(5, Math.min(95, Math.round(100 * Math.random())));
-	};
+	}
 
 	handleChannelSearch = event => {
 		event.preventDefault();
 		this.handleWebsocket();
-	};
+	}
 
 	handleInputChange = ({ currentTarget: { name, value } }) => {
 		this.setState({ [name]: value });
-	};
+	}
 
 	removeMessage = id => {
 		const { messages } = this.state;
 		this.setState(state => ({
 			messages: messages.filter(message => message.id !== id),
 		}));
-	};
+	}
+
+	parseMessage(msg) {
+		let splitText = msg.split(' ');
+		splitText.forEach( (word, i) => {
+			if (globalEmotes[word]) {
+				const emote = ( <img className="emote" src={`http://static-cdn.jtvnw.net/emoticons/v1/${globalEmotes[word].id}/3.0`} /> );
+				
+				// Replace the word with the HTML string
+				splitText[i] = emote;
+			} else {
+				splitText[i] += " ";
+			}
+		});
+        return splitText;
+	}
 
 	componentDidMount() {
 		this.handleWebsocket();
@@ -127,7 +170,7 @@ class App extends Component {
 									}}>
 									<span className="msg-user">{user}</span>:{' '}
 									<span className="msg-content">
-										{message}
+										{this.parseMessage(message)}
 									</span>
 								</div>
 							</CSSTransition>
