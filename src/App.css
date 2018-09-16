@@ -1,100 +1,99 @@
 /* The root elements */
 body {
-  /* We'll need transparency later
+	/* We'll need transparency later
   background-color: rgba(0,0,0,0);
   */
-  background-color: #333;
+	background-color: #333;
 }
-html, body {
-  margin: 0;
-  height: 100%;
+html,
+body {
+	margin: 0;
+	height: 100%;
 }
 
 #root {
-  height: 100%;
+	height: 100%;
 }
 
 /* The overall app container */
-*[class^="app-"] {
-  box-sizing: border-box;
+*[class^='app-'] {
+	box-sizing: border-box;
 
-  margin: 0;
-  height: 100%;
+	margin: 0;
+	height: 100%;
 
-  overflow: hidden;
+	overflow: hidden;
 }
 
 .app-container {
-  display: relative;
+	display: relative;
 }
 
 .app-group {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+	/*position: absolute;*/
+	/*top: 0;*/
+	/*left: 0;*/
+	width: 100%;
+	height: 100%;
+	z-index: 1;
 }
 
 #btn-test {
-  display: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
+	display: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
 }
 
 /* The fly-in classes */
-*[class^="fly-"] {
-  position: absolute;
+*[class^='fly-'] {
+	position: absolute;
 }
 
 .fly-enter {
-  /* This is the initial frame of the spawning animation
+	/* This is the initial frame of the spawning animation
   */
-  left: 100%;
+	left: 100%;
 }
 .fly-enter-active {
-  /* This is the class we assign when we are spawning the new message
+	/* This is the class we assign when we are spawning the new message
   */
-  left: -50%;
-  transition: left 10s linear;
+	left: -50%;
+	transition: left 10s linear;
 }
 .fly-exit {
-  /* This is the initial frame of the exit animation
+	/* This is the initial frame of the exit animation
   */
-  opacity: 1;
+	opacity: 1;
 }
 .fly-exit-active {
-  /* This is the class we assign when we are about to delete the message
+	/* This is the class we assign when we are about to delete the message
   */
-  opacity: 0;
-  display: none;
+	opacity: 0;
+	display: none;
 }
 
 /* The message block */
-*[class^="msg-"] {
-  position: relative;
-  display: inline;
-  overflow: hidden;
+*[class^='msg-'] {
+	position: relative;
+	display: inline;
+	overflow: hidden;
 }
 
 .msg-container {
-  font: 1.7em "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  color: #fafafa;
-  /* There is a strangerendering issue where 
+	font: 1.7em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 700;
+	color: #fafafa;
+	/* There is a strangerendering issue where
     the shadow becomes detached from the element
   text-shadow: 0 1.5em 0 #333333;
   */
 
-  word-wrap: break-word;
+	word-wrap: break-word;
 }
 
 .msg-user {
-
 }
 
 .msg-content {
-
 }
