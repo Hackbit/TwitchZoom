@@ -30,7 +30,7 @@ class App extends Component {
       areControlsInvisible: false,
     };
 
-    this.socket = io.connect('http://localhost:8080');
+    this.socket = io.connect('http://104.248.4.129:8080');
   }
 
   getRandomColor = () => {
