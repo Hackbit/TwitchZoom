@@ -92,11 +92,16 @@ body {
 	position: relative;
 	display: inline;
 	overflow: hidden;
+	white-space: nowrap;
 }
 
 .btn {
 	background: #56127c !important;
 	border-color: #56127c !important;
+	font-weight: 700;
+	font-size: 1.5em;
+	padding: 4px 2px;
+	text-shadow: 0.1em 0.1em 0 #333333;
 }
 
 .msg-container {
@@ -108,8 +113,6 @@ body {
     the shadow becomes detached from the element
   text-shadow: 0 1.5em 0 #333333;
   */
-
-	word-wrap: break-word;
 }
 
 .msg-user {
@@ -117,8 +120,9 @@ body {
 
 .msg-content {
 	color: #fafafa;
+	word-wrap: normal;
 }
 
 .emote {
-	height: 28px;
+	height: 32px;
 }
