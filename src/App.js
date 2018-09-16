@@ -60,9 +60,9 @@ class App extends Component {
       message,
     };
     let messages = [...this.state.messages, newMessage];
-    // Limit messages array to 20 at a time
-    if (messages.length >= 20) {
-      messages = messages.slice(messages.length - 10);
+    // Limit messages array to 100 at a time
+    if (messages.length >= 100) {
+      messages = messages.slice(messages.length - 60);
     }
     this.setState({ messages });
   };
