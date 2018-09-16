@@ -2,27 +2,12 @@ import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import io from 'socket.io-client';
 
-import globalEmotes from "./data/emotes.json";
+import globalEmotes from './data/emotes.json';
 
 import './App.css';
 
-
-
-const MessageContent = (msg) => {
-	let splitText = msg.split(' ');
-	splitText.forEach( (word, i) => {
-		if (globalEmotes[word]) {
-			const emote = `<img className="emote" src={http://static-cdn.jtvnw.net/emoticons/v1/${globalEmotes[word].id}/3.0} />`;
-			
-			// Replace the word with the HTML string
-			splitText[i] = emote;
-		}
-	});
-	console.log(splitText);
-	return ( `${splitText.join(' ')}` );
-};
-
-
+const WINDOW_WIDTH = window.innerWidth;
+const WINDOW_HEIGHT = window.innerHeight;
 
 class App extends Component {
 	/* State for this component has:
@@ -34,14 +19,6 @@ class App extends Component {
    	*    message: string
    	*	 color: string
 	*   }>
-	* - emotes: {
-		 emoteText: {
-		  id: number,
-		  code: string,
-		  emoticon_set: number,
-		  description: null
-		 }
-	*   }
    	*/
 	constructor(props) {
 		super(props);
@@ -49,7 +26,6 @@ class App extends Component {
 		this.state = {
 			channel: '',
 			messages: [],
-			emotes: {}
 		};
 
 		this.socket = io.connect('http://localhost:8080');
@@ -63,24 +39,33 @@ class App extends Component {
 		}
 
 		return color;
-	}
+	};
 
 	getRandomHeight = () => {
 		return Math.max(5, Math.min(95, Math.round(100 * Math.random())));
-	}
+	};
 
 	handleMessageState = response => {
 		const { userstate, message } = response;
+		// Keep messages inside viewport
+		const height =
+			this.getRandomHeight() >= WINDOW_HEIGHT
+				? WINDOW_HEIGHT
+				: this.getRandomHeight();
 		const newMessage = {
 			id: userstate.id,
-			height: this.getRandomHeight(),
 			user: userstate.username,
 			color: userstate.color || this.getRandomColor(),
+			height,
 			message,
 		};
-		const messages = [...this.state.messages, newMessage];
+		let messages = [...this.state.messages, newMessage];
+		// Limit messages array to 20 at a time
+		if (messages.length >= 20) {
+			messages = messages.slice(messages.length - 10);
+		}
 		this.setState({ messages });
-	}
+	};
 
 	handleWebsocket = () => {
 		const { channel } = this.state;
@@ -90,38 +75,71 @@ class App extends Component {
 				this.handleMessageState(response);
 			});
 		}
-	}
+	};
 
 	handleChannelSearch = event => {
 		event.preventDefault();
 		this.handleWebsocket();
-	}
+	};
 
 	handleInputChange = ({ currentTarget: { name, value } }) => {
 		this.setState({ [name]: value });
-	}
+	};
 
 	removeMessage = id => {
 		const { messages } = this.state;
 		this.setState(state => ({
 			messages: messages.filter(message => message.id !== id),
 		}));
-	}
+	};
 
 	parseMessage(msg) {
 		let splitText = msg.split(' ');
-		splitText.forEach( (word, i) => {
+		splitText.forEach((word, i) => {
 			if (globalEmotes[word]) {
-				const emote = ( <img className="emote" src={`http://static-cdn.jtvnw.net/emoticons/v1/${globalEmotes[word].id}/3.0`} /> );
-				
+				const emote = (
+					<img
+						className="emote"
+						src={`http://static-cdn.jtvnw.net/emoticons/v1/${
+							globalEmotes[word].id
+						}/3.0`}
+						key={globalEmotes[word].id + i}
+					/>
+				);
+
 				// Replace the word with the HTML string
 				splitText[i] = emote;
 			} else {
-				splitText[i] += " ";
+				splitText[i] += ' ';
 			}
 		});
-        return splitText;
+
+		return splitText;
 	}
+
+	displayMessages = () =>
+		this.state.messages.map(({ id, height, color, user, message }) => (
+			<CSSTransition
+				key={id}
+				timeout={10000}
+				classNames="fly"
+				unmountOnExit
+				onEntered={() => {
+					this.removeMessage(id);
+				}}>
+				<div
+					className="msg-container"
+					style={{
+						top: height + '%',
+						color,
+					}}>
+					<span className="msg-user">{user}</span>:{' '}
+					<span className="msg-content">
+						{this.parseMessage(message)}
+					</span>
+				</div>
+			</CSSTransition>
+		));
 
 	componentDidMount() {
 		this.handleWebsocket();
@@ -143,38 +161,29 @@ class App extends Component {
 						name="channel"
 						value={channel}
 						className="form-control"
+						autoFocus={true}
 						placeholder="Type a twitch channel to get chat comments..."
 						onChange={this.handleInputChange}
 					/>
-					<button className="btn btn-primary btn-sm" type="submit">
-						Submit
+					<button
+						className="btn btn-primary btn-sm btn-block"
+						type="submit">
+						Tune into stream
 					</button>
 				</form>
-				<h2>{channel}</h2>
 				<TransitionGroup className="app-group">
-					{messages.length > 0 &&
-						messages.map(({ id, height, color, user, message }) => (
-							<CSSTransition
-								key={id}
-								timeout={10000}
-								classNames="fly"
-								unmountOnExit
-								onEntered={() => {
-									this.removeMessage(id);
-								}}>
-								<div
-									className="msg-container"
-									style={{
-										top: height + '%',
-										color,
-									}}>
-									<span className="msg-user">{user}</span>:{' '}
-									<span className="msg-content">
-										{this.parseMessage(message)}
-									</span>
-								</div>
-							</CSSTransition>
-						))}
+					{messages.length > 0 && (
+						<iframe
+							src={`https://player.twitch.tv/?channel=${channel}`}
+							height={WINDOW_HEIGHT}
+							width={WINDOW_WIDTH}
+							frameBorder="0"
+							scrolling="no"
+							title={channel}
+							allowFullScreen={true}
+						/>
+					)}
+					{messages.length > 0 && this.displayMessages()}
 				</TransitionGroup>
 			</div>
 		);

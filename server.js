@@ -57,14 +57,12 @@ function bot(channel, socket) {
 			socket.emit('message', { channel, userstate, message });
 		});
 		socket.on('disconnect', () => {
-			client.close();
 			client.disconnect();
+			socket.disconnect();
 			console.log('Client disconnected');
 		});
 	});
 	client.on('disconnected', reason => {
-		client.close();
-		client.disconnect();
 		console.log('Disconnected: ', reason);
 	});
 }
