@@ -65,6 +65,10 @@ class App extends Component {
 		return color;
 	}
 
+	getRandomHeight = () => {
+		return Math.max(5, Math.min(95, Math.round(100 * Math.random())));
+	}
+
 	handleMessageState = response => {
 		const { userstate, message } = response;
 		const newMessage = {
@@ -88,10 +92,6 @@ class App extends Component {
 		}
 	}
 
-	getRandomHeight = () => {
-		return Math.max(5, Math.min(95, Math.round(100 * Math.random())));
-	}
-
 	handleChannelSearch = event => {
 		event.preventDefault();
 		this.handleWebsocket();
@@ -112,10 +112,12 @@ class App extends Component {
 		let splitText = msg.split(' ');
 		splitText.forEach( (word, i) => {
 			if (globalEmotes[word]) {
-			const emote = ( <img className="emote" src={`http://static-cdn.jtvnw.net/emoticons/v1/${globalEmotes[word].id}/3.0`} /> );
+				const emote = ( <img className="emote" src={`http://static-cdn.jtvnw.net/emoticons/v1/${globalEmotes[word].id}/3.0`} /> );
 				
 				// Replace the word with the HTML string
 				splitText[i] = emote;
+			} else {
+				splitText[i] += " ";
 			}
 		});
         return splitText;
