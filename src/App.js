@@ -24,7 +24,6 @@ class App extends Component {
 			messages: [],
 		};
 
-		this.interval = null;
 		this.socket = io.connect('http://localhost:8080');
 	}
 
@@ -86,13 +85,11 @@ class App extends Component {
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.interval);
 		this.socket.close();
 	}
 
 	render() {
 		const { channel, messages } = this.state;
-		console.log(this.state);
 		return (
 			<div className="app-container">
 				<form
@@ -106,10 +103,7 @@ class App extends Component {
 						placeholder="Type a twitch channel to get chat comments..."
 						onChange={this.handleInputChange}
 					/>
-					<button
-						className="btn btn-primary btn-sm"
-						type="submit"
-						onClick={this.onClickButton}>
+					<button className="btn btn-primary btn-sm" type="submit">
 						Submit
 					</button>
 				</form>
