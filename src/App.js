@@ -177,7 +177,7 @@ class App extends Component {
   getChannelFromURL = () => {
     if (window.location.pathname !== '/') {
       const channel = window.location.pathname.replace('/', '').split('/')[0];
-      this.setState({ channel });
+      this.setState({ channel: channel, currentChannelName: channel });
       this.timeout = setTimeout(() => {
         this.handleWebsocket();
       }, 300);
@@ -224,7 +224,7 @@ class App extends Component {
             onClick={this.switchChannel}
             type="submit"
           >
-            Tune into a stream
+            Tune in!
           </button>
         </form>
         <TransitionGroup className="app-group">
