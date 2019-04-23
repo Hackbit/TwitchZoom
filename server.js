@@ -1,7 +1,6 @@
 'use strict';
 
 const http = require('http');
-const fs = require('fs');
 const tmi = require('tmi.js');
 const socketio = require('socket.io');
 
@@ -69,4 +68,4 @@ io.sockets.on('connection', (socket, username) => {
 	});
 });
 
-server.listen(8080);
+server.listen(3001);

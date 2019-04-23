@@ -3,17 +3,14 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import classNames from "classnames";
 import io from "socket.io-client";
 
-import globalEmotes from "./data/emotes.json";
+import globalEmotes from "./data/emotes.json.js";
 
 import "./App.css";
 
 const WINDOW_WIDTH = window.innerWidth;
 const WINDOW_HEIGHT = window.innerHeight;
 
-const WS_URL =
-  process.env.NODE_ENV === "production"
-    ? "http://104.248.4.129:8080"
-    : "http://localhost:8080";
+const WS_URL = "http://localhost:3001";
 
 class App extends Component {
   /* State for this component has:
