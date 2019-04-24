@@ -3,7 +3,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import classNames from "classnames";
 import io from "socket.io-client";
 
-import globalEmotes from "./data/emotes.json.js";
+import globalEmotes from "./data/emotes.json";
 
 import "./App.css";
 

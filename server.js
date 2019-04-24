@@ -1,29 +1,48 @@
-'use strict';
+"use strict";
 
-const http = require('http');
+// Load process environment variables for .env file
+require('dotenv').config();
+
+// Define import requirements
+const express = require("express");
+const path = require("path");
+
 const tmi = require('tmi.js');
 const socketio = require('socket.io');
 
-const server = http.createServer();
-const io = socketio.listen(server);
+const app = express();
 
-function bot(channel, socket) {
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
+
+// Render the React client as the root route 
+app.get("/", (req,res) => {
+	res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
+
+// Let's run the thing!
+const httpServer = app.listen(process.env.PORT || 3001);
+const io = socketio.listen(httpServer);
+
+// Define the Twitch Bot's behavior
+const bot = (channel, socket) => {
 	const tmiOptions = {
 		options: {
-			debug: true,
+			debug: true
 		},
 		connection: {
-			reconnect: false,
+			reconnect: false
 		},
 		identity: {
-			username: 'fxgump',
-			password: 'oauth:2urdogguvmls0v9t0lcquzrcjn5orj',
+			username: process.env.USERNAME,
+			password: process.env.PASSWORD
 		},
-		channels: [channel],
+		channels: [channel]
 	};
 
 	const client = new tmi.client(tmiOptions);
-	client.connect();
+	client.connect()
+		.catch(err => { throw new Error(err) });
 	client.on('connected', (addr, port) => {
 		client.on('message', (channel, userstate, message, self) => {
 			/*	---- DATA RESPONSE FORMAT ----
@@ -62,10 +81,9 @@ function bot(channel, socket) {
 	});
 }
 
+// Begin listening to the relevant Twitch chat and feeding messages to the front-end
 io.sockets.on('connection', (socket, username) => {
 	socket.on('message', channel => {
 		bot(channel, socket);
 	});
 });
-
-server.listen(3001);
